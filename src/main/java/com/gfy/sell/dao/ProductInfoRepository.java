@@ -1,17 +1,24 @@
 package com.gfy.sell.dao;
 
 import com.gfy.sell.entity.ProductInfo;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-public interface ProductInfoRepository {
-    int deleteByPrimaryKey(String productId);
+import java.util.List;
 
-    int insert(ProductInfo record);
+/**
+ * @author gfy
+ */
+@Repository
+public interface ProductInfoRepository extends JpaRepository<ProductInfo, String> {
 
-    int insertSelective(ProductInfo record);
+    /**
+     * 按照商品的状态查询商品列表
+     *
+     * @param productStatus
+     * @return
+     */
+    List<ProductInfo> findByProductStatus(Integer productStatus);
 
-    ProductInfo selectByPrimaryKey(String productId);
 
-    int updateByPrimaryKeySelective(ProductInfo record);
-
-    int updateByPrimaryKey(ProductInfo record);
 }

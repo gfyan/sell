@@ -1,7 +1,10 @@
 package com.gfy.sell.entity;
 
 import lombok.Data;
+import org.hibernate.annotations.DynamicUpdate;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -10,8 +13,12 @@ import java.util.Date;
  *
  * @author gfy
  */
+@Entity
 @Data
+@DynamicUpdate
 public class ProductInfo {
+
+    @Id
     private String productId;
 
     private String productName;
@@ -24,11 +31,9 @@ public class ProductInfo {
 
     private String productIcon;
 
+    private Integer productStatus;
+
     private Integer categoryType;
-
-    private Date createTime;
-
-    private Date updateTime;
 
     @Override
     public String toString() {
@@ -40,8 +45,7 @@ public class ProductInfo {
                 ", productDescription='" + productDescription + '\'' +
                 ", productIcon='" + productIcon + '\'' +
                 ", categoryType=" + categoryType +
-                ", createTime=" + createTime +
-                ", updateTime=" + updateTime +
+                ", productStatus=" + productStatus +
                 '}';
     }
 }
