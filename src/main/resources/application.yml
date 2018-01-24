@@ -1,3 +1,8 @@
+#整个项目base路径
+server:
+  context-path: /sell
+
+#spring配置
 spring:
   datasource:
     username: root
@@ -6,3 +11,5 @@ spring:
     url: jdbc:mysql://127.0.0.1/sell?characterEncoding=utf-8&useSSL=false
   jpa:
     show-sql: true
+  jms:
+    pub-sub-domain:
