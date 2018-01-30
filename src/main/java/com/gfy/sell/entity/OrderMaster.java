@@ -1,7 +1,9 @@
 package com.gfy.sell.entity;
 
+import com.gfy.sell.enumbean.OrderMasterOrderStatusEnum;
 import lombok.Data;
 
+import javax.persistence.Entity;
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -11,7 +13,10 @@ import java.util.Date;
  * @author gfy
  */
 @Data
+@Entity
 public class OrderMaster {
+
+
     private String orderId;
 
     private String buyerName;
@@ -24,11 +29,7 @@ public class OrderMaster {
 
     private BigDecimal orderAmount;
 
-    private Byte orderStatus;
-
-    private Date createTime;
-
-    private Date updateTime;
+    private Integer orderStatus = OrderMasterOrderStatusEnum.NEW.getCode();
 
     @Override
     public String toString() {
@@ -40,8 +41,6 @@ public class OrderMaster {
                 ", buyerOpenid='" + buyerOpenid + '\'' +
                 ", orderAmount=" + orderAmount +
                 ", orderStatus=" + orderStatus +
-                ", createTime=" + createTime +
-                ", updateTime=" + updateTime +
                 '}';
     }
 }
