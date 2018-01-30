@@ -7,11 +7,13 @@ import com.gfy.sell.service.ProductCategoryService;
 import com.gfy.sell.service.ProductInfoService;
 import com.gfy.sell.vo.ProductVo;
 import com.gfy.sell.vo.ResultVo;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -40,16 +42,37 @@ public class BuyerProductController {
         //按照类目列表进行查询出类目详细信息
         List<ProductCategory> productCategoryList = productCategoryService.findByCategoryTypeIn(categoryTypeList);
 
-        //查询所有的类目
-        List<ProductCategory> categoryAll = productCategoryService.findAll();
+        List<ProductInfo> tempProductInfoList = new ArrayList<>();
+        List<ProductVo> productVoList = new ArrayList<>();
+        //遍历所有类目
+        for (ProductCategory entity : productCategoryList) {
+            ProductVo productVo = new ProductVo();
+            productVo.setCategoryName(entity.getCategoryName());
+            productVo.setCategoryType(entity.getCategoryType());
 
+            //遍历类目下的商品
+            List<ProductInfoRespDto> respDtoList = new ArrayList<>();
+            for (ProductInfo entity2 : productInfoUpAll) {
+                if (entity2.getCategoryType().equals(entity.getCategoryType())) {
+                    ProductInfoRespDto respDto = new ProductInfoRespDto();
+                    BeanUtils.copyProperties(entity2, respDto);
+                    respDtoList.add(respDto);
+                    tempProductInfoList.add(entity2);
+                }
+            }
 
-        ProductInfoRespDto respDto = new ProductInfoRespDto();
-        ProductVo productVo = new ProductVo();
-        productVo.setProductInfoRespDtoList(Arrays.asList(respDto));
-        ResultVo<ProductVo> resultVo = new ResultVo<>();
-        resultVo.setData(productVo);
-        return resultVo;
+            //移除已经添加过的商品
+            productInfoUpAll.removeAll(tempProductInfoList);
+            tempProductInfoList.clear();
+            productVo.setProductInfoRespDtoList(respDtoList);
+            productVoList.add(productVo);
+        }
+        tempProductInfoList = null;
+        productInfoUpAll = null;
+        categoryTypeList = null;
+
+        //返回json数据
+        return ResultVo.success(productVoList);
     }
 
 }
