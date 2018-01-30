@@ -21,10 +21,19 @@ public class ProductInfo {
     @Id
     private String productId;
 
+    /**
+     * 商品名字
+     **/
     private String productName;
 
+    /**
+     * 商品价格
+     **/
     private BigDecimal productPrice;
 
+    /**
+     * 库存
+     **/
     private Integer productStock;
 
     private String productDescription;

@@ -1,21 +1,15 @@
 package com.gfy.sell.dao;
 
 import com.gfy.sell.entity.OrderDetail;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.List;
 
 /**
  * @author gfy
  */
-public interface OrderDetailRepository {
+public interface OrderDetailRepository extends JpaRepository<OrderDetail, String> {
 
-    int deleteByPrimaryKey(String detailId);
+    List<>
 
-    int insert(OrderDetail record);
-
-    int insertSelective(OrderDetail record);
-
-    OrderDetail selectByPrimaryKey(String detailId);
-
-    int updateByPrimaryKeySelective(OrderDetail record);
-
-    int updateByPrimaryKey(OrderDetail record);
 }
