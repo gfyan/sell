@@ -4,6 +4,8 @@ import com.gfy.sell.enumbean.OrderMasterOrderStatusEnum;
 import com.gfy.sell.enumbean.OrderMasterPayStatusEnum;
 import lombok.Data;
 import org.hibernate.annotations.DynamicUpdate;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -49,8 +51,10 @@ public class OrderMaster {
 
     private Integer payStatus = OrderMasterPayStatusEnum.WAIT.getCode();
 
+    @CreatedDate
     private Date createTime;
 
+    @LastModifiedDate
     private Date updateTime;
 
     @Override
