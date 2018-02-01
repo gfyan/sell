@@ -1,5 +1,6 @@
 package com.gfy.sell.service;
 
+import com.gfy.sell.dto.req.CartReqDto;
 import com.gfy.sell.entity.ProductInfo;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -35,10 +36,20 @@ public interface ProductInfoService {
     List<ProductInfo> findUpAll();
 
 
-    //加库存
+    /**
+     * 加库存
+     *
+     * @param cartReqDtoList 购物车实例List
+     */
+    void increaseStock(List<CartReqDto> cartReqDtoList);
 
 
-    //减库存
+    /**
+     * 减库存
+     *
+     * @param cartReqDtoList 购物车实例List
+     */
+    void decreaseStock(List<CartReqDto> cartReqDtoList);
 
     /**
      * 保存商品方法

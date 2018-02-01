@@ -1,6 +1,5 @@
 package com.gfy.sell.enumbean.table;
 
-import lombok.Data;
 import lombok.Getter;
 
 /**

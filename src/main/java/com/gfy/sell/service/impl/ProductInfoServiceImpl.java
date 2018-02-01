@@ -1,13 +1,17 @@
 package com.gfy.sell.service.impl;
 
 import com.gfy.sell.dao.ProductInfoRepository;
+import com.gfy.sell.dto.req.CartReqDto;
 import com.gfy.sell.entity.ProductInfo;
+import com.gfy.sell.enumbean.exception.ProductExceptionEnum;
 import com.gfy.sell.enumbean.table.ProductInfoProductStatusEnum;
+import com.gfy.sell.exception.SellException;
 import com.gfy.sell.service.ProductInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -24,7 +28,7 @@ public class ProductInfoServiceImpl implements ProductInfoService {
     /**
      * 按照主键查询商品
      *
-     * @param productId
+     * @param productId 商品id
      * @return
      */
     @Override
@@ -56,11 +60,44 @@ public class ProductInfoServiceImpl implements ProductInfoService {
     /**
      * 添加商品
      *
-     * @param productInfo
+     * @param productInfo 商品javaBean
      * @return
      */
     @Override
     public ProductInfo save(ProductInfo productInfo) {
         return productInfoRepository.save(productInfo);
+    }
+
+
+    /**
+     * 加库存
+     *
+     * @param cartReqDtoList 购物车实例List
+     */
+    @Override
+    public void increaseStock(List<CartReqDto> cartReqDtoList) {
+
+    }
+
+    /**
+     * 减库存
+     *
+     * @param cartReqDtoList 购物车实例List
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void decreaseStock(List<CartReqDto> cartReqDtoList) {
+        for (CartReqDto cartReqDto : cartReqDtoList) {
+            ProductInfo productInfo = productInfoRepository.findOne(cartReqDto.getProductId());
+            if (productInfo == null) {
+                throw new SellException(ProductExceptionEnum.PRODUCT_NOT_EXIST);
+            }
+            Integer surplus = productInfo.getProductStock() - cartReqDto.getProductQuantity();
+            if (surplus < 0) {
+                throw new SellException(ProductExceptionEnum.product_stock_error);
+            }
+            productInfo.setProductStock(surplus);
+            productInfoRepository.save(productInfo);
+        }
     }
 }

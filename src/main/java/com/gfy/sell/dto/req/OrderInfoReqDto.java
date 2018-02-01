@@ -34,11 +34,6 @@ public class OrderInfoReqDto {
 
     private String buyerOpenid;
 
-    /**
-     * 商品总价
-     **/
-    private BigDecimal orderAmount;
-
     private Integer orderStatus = OrderMasterOrderStatusEnum.NEW.getCode();
 
     private Integer payStatus = OrderMasterPayStatusEnum.WAIT.getCode();
