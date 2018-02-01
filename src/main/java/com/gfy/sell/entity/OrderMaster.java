@@ -1,7 +1,7 @@
 package com.gfy.sell.entity;
 
-import com.gfy.sell.enumbean.OrderMasterOrderStatusEnum;
-import com.gfy.sell.enumbean.OrderMasterPayStatusEnum;
+import com.gfy.sell.enumbean.table.OrderMasterOrderStatusEnum;
+import com.gfy.sell.enumbean.table.OrderMasterPayStatusEnum;
 import lombok.Data;
 import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.data.annotation.CreatedDate;

@@ -32,7 +32,8 @@ CREATE TABLE `order_master` (
   `buyer_address` varchar(128) NOT NULL COMMENT '买家地址',
   `buyer_openid` varchar(32) NOT NULL COMMENT '买家微信openID',
   `order_amount` decimal(8,2) NOT NULL COMMENT '订单总金额',
-  `order_status` tinyint(3) NOT NULL DEFAULT '0' COMMENT '订单状态，默认为0表示未支付',
+  `order_status` tinyint(3) NOT NULL DEFAULT '0' COMMENT '订单状态，默认为新下单',
+  `pay_status` tinyint(3) NOT NULL DEFAULT '0' COMMENT '支付状态，默认为0表示未支付',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
   PRIMARY KEY (`order_id`)

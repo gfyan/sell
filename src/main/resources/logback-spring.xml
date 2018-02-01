@@ -2,7 +2,7 @@
 
 <configuration>
 
-    <property name="BASE_DIR" value="D:/logs/sell"/>
+    <property name="BASE_DIR" value="E:/logs/sell"/>
 
     <appender name="consoleLog" class="ch.qos.logback.core.ConsoleAppender">
         <layout class="ch.qos.logback.classic.PatternLayout">
@@ -54,10 +54,8 @@
         <appender-ref ref="fileErrorLog"/>
     </logger>
 
-    <root level="info">
+    <root level="info" additivity="false">
         <appender-ref ref="consoleLog"/>
-        <appender-ref ref="fileInfoLog"/>
-        <appender-ref ref="fileErrorLog"/>
     </root>
 
 </configuration>

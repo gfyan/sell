@@ -31,7 +31,7 @@ public class OrderMasterRepositoryTest {
     @Test
     public void saveTest() {
         OrderMaster orderMaster = new OrderMaster();
-        orderMaster.setOrderId("3213213");
+        orderMaster.setOrderId("123456");
         orderMaster.setBuyerName("桂方银");
         orderMaster.setBuyerPhone("18571652452");
         orderMaster.setBuyerAddress("蒋村");
@@ -57,9 +57,10 @@ public class OrderMasterRepositoryTest {
 
     @Test
     public void findByBuyerOpenid() throws Exception {
-        PageRequest pageRequest = new PageRequest(0,1);
-        Page<OrderMaster> byBuyerOpenid = orderMasterRepository.findByBuyerOpenid("1110", pageRequest);
-
+        PageRequest pageRequest = new PageRequest(0, 3);
+        Page<OrderMaster> orderMasterPage = orderMasterRepository.findByBuyerOpenid("1110", pageRequest);
+        Assert.assertNotEquals(0, orderMasterPage.getContent().size());
+        System.out.println(orderMasterPage);
     }
 
 }

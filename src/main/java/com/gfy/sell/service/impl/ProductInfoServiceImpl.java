@@ -2,7 +2,7 @@ package com.gfy.sell.service.impl;
 
 import com.gfy.sell.dao.ProductInfoRepository;
 import com.gfy.sell.entity.ProductInfo;
-import com.gfy.sell.enumbean.ProductInfoProductStatusEnum;
+import com.gfy.sell.enumbean.table.ProductInfoProductStatusEnum;
 import com.gfy.sell.service.ProductInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
