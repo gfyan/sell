@@ -66,9 +66,6 @@ public class BuyerProductController {
             productVo.setProductInfoRespDtoList(respDtoList);
             productVoList.add(productVo);
         }
-        tempProductInfoList = null;
-        productInfoUpAll = null;
-        categoryTypeList = null;
 
         //返回json数据
         return ResultVo.success(productVoList);

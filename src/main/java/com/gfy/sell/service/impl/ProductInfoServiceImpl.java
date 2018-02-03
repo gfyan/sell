@@ -3,10 +3,12 @@ package com.gfy.sell.service.impl;
 import com.gfy.sell.dao.ProductInfoRepository;
 import com.gfy.sell.dto.req.CartReqDto;
 import com.gfy.sell.entity.ProductInfo;
+import com.gfy.sell.enumbean.exception.OrderExceptionEnum;
 import com.gfy.sell.enumbean.exception.ProductExceptionEnum;
 import com.gfy.sell.enumbean.table.ProductInfoProductStatusEnum;
 import com.gfy.sell.exception.SellException;
 import com.gfy.sell.service.ProductInfoService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,6 +21,7 @@ import java.util.List;
  * @author gfy
  */
 @Service
+@Slf4j
 public class ProductInfoServiceImpl implements ProductInfoService {
 
 
@@ -94,10 +97,15 @@ public class ProductInfoServiceImpl implements ProductInfoService {
             }
             Integer surplus = productInfo.getProductStock() - cartReqDto.getProductQuantity();
             if (surplus < 0) {
-                throw new SellException(ProductExceptionEnum.product_stock_error);
+                throw new SellException(ProductExceptionEnum.PRODUCT_STOCK_ERROR);
             }
             productInfo.setProductStock(surplus);
-            productInfoRepository.save(productInfo);
+            try {
+                productInfoRepository.save(productInfo);
+            } catch (Exception e) {
+                log.error("保存新库存信息失败：" + e);
+                throw new SellException(ProductExceptionEnum.PRODUCT_INSERT_ERROR);
+            }
         }
     }
 }

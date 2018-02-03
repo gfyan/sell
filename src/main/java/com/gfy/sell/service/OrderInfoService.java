@@ -23,7 +23,7 @@ public interface OrderInfoService {
     /**
      * 查询单个订单对象
      *
-     * @param orderId
+     * @param orderId 商品id
      * @return
      */
     OrderInfoRespDto findOne(String orderId);
