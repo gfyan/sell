@@ -11,12 +11,13 @@ import com.gfy.sell.entity.OrderMaster;
 import com.gfy.sell.entity.ProductInfo;
 import com.gfy.sell.enumbean.exception.OrderExceptionEnum;
 import com.gfy.sell.enumbean.exception.ProductExceptionEnum;
+import com.gfy.sell.enumbean.table.OrderMasterOrderStatusEnum;
+import com.gfy.sell.enumbean.table.OrderMasterPayStatusEnum;
 import com.gfy.sell.exception.SellException;
 import com.gfy.sell.service.OrderInfoService;
 import com.gfy.sell.service.ProductInfoService;
 import com.gfy.sell.util.KeyUtil;
 import com.gfy.sell.util.OrderMaster2OrderInfoRespDtoConverter;
-import com.google.common.collect.Collections2;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -113,6 +114,12 @@ public class OrderInfoServiceImpl implements OrderInfoService {
         return orderInfoReqDto;
     }
 
+    /**
+     * 查询单个订单信息
+     *
+     * @param orderId 订单id
+     * @return
+     */
     @Override
     public OrderInfoRespDto findOne(String orderId) {
         OrderMaster orderMaster = orderMasterRepository.findOne(orderId);
@@ -129,6 +136,13 @@ public class OrderInfoServiceImpl implements OrderInfoService {
         return respDto;
     }
 
+    /**
+     * 查询买家订单列表
+     *
+     * @param buyerOpenId 买家openid
+     * @param pageable    分页参数
+     * @return
+     */
     @Override
     public Page<OrderInfoRespDto> findList(String buyerOpenId, Pageable pageable) {
         Page<OrderMaster> byBuyerOpenid = orderMasterRepository.findByBuyerOpenid(buyerOpenId, pageable);
@@ -137,9 +151,46 @@ public class OrderInfoServiceImpl implements OrderInfoService {
         return infoRespDtoPage;
     }
 
+    /**
+     * 取消订单
+     *
+     * @param orderInfoReqDto 订单dto
+     * @return 订单dto
+     */
     @Override
     public OrderInfoReqDto cancel(OrderInfoReqDto orderInfoReqDto) {
-        return null;
+        //先查询订单
+        OrderMaster orderMaster = orderMasterRepository.findOne(orderInfoReqDto.getOrderId());
+        if (orderMaster == null) {
+            throw new SellException(OrderExceptionEnum.ORDER_NOT_EXIST);
+        }
+        //判断订单状态
+        if (!orderMaster.getOrderStatus().equals(OrderMasterOrderStatusEnum.NEW.getCode())) {
+            throw new SellException(OrderExceptionEnum.ORDER_STATUS_ERROR);
+        }
+
+
+        //修改订单状态为取消
+        orderMaster.setOrderStatus(OrderMasterOrderStatusEnum.CANCEL.getCode());
+        OrderMaster result = orderMasterRepository.save(orderMaster);
+        if (result == null ||
+                !result.getOrderStatus().equals(OrderMasterOrderStatusEnum.CANCEL.getCode())) {
+            log.error("订单更新失败，result={}", result);
+            throw new SellException(OrderExceptionEnum.ORDER_UPDATE_FAIL);
+        }
+
+        //返回库存
+        List<OrderDetail> orderDetailListByOrderId = orderDetailRepository.findByOrderId(orderInfoReqDto.getOrderId());
+        List<CartReqDto> cartReqDtoList = orderDetailListByOrderId.stream().map(
+                e -> new CartReqDto(e.getProductId(), e.getProductQuantity())
+        ).collect(Collectors.toList());
+        productInfoService.increaseStock(cartReqDtoList);
+
+        //如果已支付则必须退换金额到用户
+        if (orderMaster.getPayStatus().equals(OrderMasterPayStatusEnum.SUCCESS.getCode())) {
+
+        }
+        return orderInfoReqDto;
     }
 
     @Override

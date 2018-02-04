@@ -14,7 +14,9 @@ public enum OrderExceptionEnum implements BaseExceptionEnum {
     ORDER_INSERT_ERROR(100, "下单失败"),
     ORDER_DETAIL_INSERT_ERROR(101, "插入订单详情失败"),
     ORDER_NOT_EXIST(102, "订单不存在"),
-    ORDER_DETAIL_NOT_EXIST(103, "订单详情不存在");
+    ORDER_DETAIL_NOT_EXIST(103, "订单详情不存在"),
+    ORDER_STATUS_ERROR(104, "订单状态不正确"),
+    ORDER_UPDATE_FAIL(105, "订单取消失败"),;
 
     private Integer code;
 

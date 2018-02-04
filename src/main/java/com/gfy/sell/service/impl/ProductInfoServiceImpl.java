@@ -78,7 +78,22 @@ public class ProductInfoServiceImpl implements ProductInfoService {
      * @param cartReqDtoList 购物车实例List
      */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void increaseStock(List<CartReqDto> cartReqDtoList) {
+        for (CartReqDto cartReqDto : cartReqDtoList) {
+            ProductInfo productInfo = productInfoRepository.findOne(cartReqDto.getProductId());
+            if (productInfo == null) {
+                throw new SellException(ProductExceptionEnum.PRODUCT_NOT_EXIST);
+            }
+            Integer surplus = productInfo.getProductStock() + cartReqDto.getProductQuantity();
+            productInfo.setProductStock(surplus);
+            try {
+                productInfoRepository.save(productInfo);
+            } catch (Exception e) {
+                log.error("商品库存增加信息保存失败：{}", e);
+                throw new SellException(OrderExceptionEnum.ORDER_DETAIL_INSERT_ERROR);
+            }
+        }
 
     }
 

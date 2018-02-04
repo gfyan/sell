@@ -15,7 +15,7 @@ public interface OrderInfoService {
     /**
      * 创建订单
      *
-     * @param orderInfoReqDto
+     * @param orderInfoReqDto 前端参数
      * @return
      */
     OrderInfoReqDto create(OrderInfoReqDto orderInfoReqDto);
@@ -23,7 +23,7 @@ public interface OrderInfoService {
     /**
      * 查询单个订单对象
      *
-     * @param orderId 商品id
+     * @param orderId 订单id
      * @return
      */
     OrderInfoRespDto findOne(String orderId);
@@ -31,8 +31,8 @@ public interface OrderInfoService {
     /**
      * 查询订单列表
      *
-     * @param buyerOpenId
-     * @param pageable
+     * @param buyerOpenId 买家openid
+     * @param pageable    分页参数
      * @return
      */
     Page<OrderInfoRespDto> findList(String buyerOpenId, Pageable pageable);
@@ -40,15 +40,15 @@ public interface OrderInfoService {
     /**
      * 取消订单
      *
-     * @param orderInfoReqDto
-     * @return
+     * @param orderInfoReqDto 订单dto
+     * @return 订单dto
      */
     OrderInfoReqDto cancel(OrderInfoReqDto orderInfoReqDto);
 
     /**
      * 完成订单
      *
-     * @param orderInfoReqDto
+     * @param orderInfoReqDto 订单bean
      * @return
      */
     OrderInfoReqDto finish(OrderInfoReqDto orderInfoReqDto);
